@@ -304,3 +304,54 @@ type InstrInfo struct {
 	Start uint
 	End   uint
 }
+
+type ParseError interface {
+	error
+	isParseError()
+	ErrorCode() uint
+}
+
+type LabelAlreadySetParseError struct {
+	Label string
+	Line  []TokenInfo
+}
+
+func (LabelAlreadySetParseError) isParseError() {}
+func (e LabelAlreadySetParseError) Error() string {
+	return fmt.Sprintf("Label '%s' is already set", e.Label)
+}
+func (e LabelAlreadySetParseError) ErrorCode() uint {
+	return 301
+}
+
+type UnexpectedTokenParseError struct {
+	TokenInfo TokenInfo
+}
+
+func (UnexpectedTokenParseError) isParseError() {}
+func (e UnexpectedTokenParseError) Error() string {
+	return fmt.Sprintf("Unexpected token '%s'", e.TokenInfo.Token.Repr())
+}
+func (e UnexpectedTokenParseError) ErrorCode() uint {
+	return 302
+}
+
+type InvalidSyntaxParseError struct{}
+
+func (InvalidSyntaxParseError) isParseError() {}
+func (e InvalidSyntaxParseError) Error() string {
+	return fmt.Sprintf("Invalid Syntax")
+}
+func (e InvalidSyntaxParseError) ErrorCode() uint {
+	return 303
+}
+
+type NotEnoughArgumentParseError struct {
+	TokenInfo TokenInfo
+	Got       uint
+	Expected  uint
+}
+
+type UnknownFunctionNameParseError struct {
+	TokenInfo TokenInfo
+}

@@ -67,14 +67,22 @@ type ErrorSignal struct {
 	ErrorInfo InterpreterErrorInfo
 }
 
+func (ErrorSignal) isSignal() {}
+
 type InterpreterErrorSignal struct {
 	InterpreterError InterpreterError
 }
+
+func (InterpreterErrorSignal) isSignal() {}
 
 type JumpSignal struct {
 	n uint
 }
 
+func (JumpSignal) isSignal() {}
+
 type ReturnSignal struct {
 	Value Value
 }
+
+func (ReturnSignal) isSignal() {}

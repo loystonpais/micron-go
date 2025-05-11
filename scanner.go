@@ -1,18 +1,18 @@
 package main
 
 type Char struct {
-	char rune
-	n    uint
+	Char rune
+	N    uint
 }
 
-func NewChar(char rune, n uint) *Char {
-	return &Char{char, n}
+func NewChar(char rune, n uint) Char {
+	return Char{char, n}
 }
 
-func CharsFromSource(source string) []*Char {
+func CharsFromSource(source string) []Char {
 	runes := []rune(source)
 
-	var chars []*Char
+	var chars []Char
 
 	for n, char := range runes {
 		chars = append(chars, NewChar(char, uint(n)))
